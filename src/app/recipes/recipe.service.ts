@@ -1,0 +1,24 @@
+import { EventEmitter } from '@angular/core';
+import { Ingredient } from '../shared/ingredient.model';
+import { Recipe } from "./recipe.model";
+
+export class RecipeService {
+
+  recipeSelected = new EventEmitter<Recipe>();
+
+  private recipes: Recipe[] = [
+    new Recipe('Pizza', 'Margherita', 'https://cdn.loveandlemons.com/wp-content/uploads/2019/09/margherita-pizza.jpg',
+      [
+        new Ingredient('Tomatoes', 2),
+        new Ingredient('Mussarela', 1)
+      ]),
+    new Recipe('Pudim', 'Leite Condensado', 'https://naminhapanela.com/wp-content/uploads/2019/12/Pudim_leite_condensado-3-1024x685.jpg',
+      [
+        new Ingredient('Milk', 1)
+      ])
+  ];
+
+  getRecipes() {
+    return this.recipes.slice();
+  }
+}
