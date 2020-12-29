@@ -19,4 +19,12 @@ export class ShoppingListService {
     this.ingredients.push(ingredient);
     this.ingrediantesChanged.emit(this.ingredients.slice());
   }
+
+  addIngredients(ingredients: Ingredient[]){
+    // ingredients.forEach(ingredient => {
+    //   this.addIngredient(ingredient);
+    // });
+    this.ingredients.push(...ingredients); //using the spread operator ES6
+    this.ingrediantesChanged.emit(this.ingredients.slice());
+  }
 }
