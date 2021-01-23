@@ -7,6 +7,7 @@ export class ShoppingListService {
   // it's a better practice using Subject, instead of EventEmitter in this case
   //ingrediantesChanged = new EventEmitter<Ingredient[]>();
   ingrediantesChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
 
   private ingredients: Ingredient[] = [
     new Ingredient('flour', 12),
@@ -16,6 +17,10 @@ export class ShoppingListService {
 
   getIngredients() {
     return this.ingredients.slice();
+  }
+
+  getIngredient(index: number) {
+    return this.ingredients[index];
   }
 
   addIngredient(ingredient: Ingredient) {
