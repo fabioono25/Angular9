@@ -6,14 +6,15 @@ import { RouterModule, Routes } from "@angular/router";
 
 import { RecipesComponent } from "./recipes/recipes.component";
 import { ShoppingListComponent } from "./shopping-list/shopping-list.component";
+import { RecipeResolverService } from './recipes/recipes-resolver.service';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/recipes', pathMatch: 'full' },
   { path: 'recipes', component: RecipesComponent, children: [
     { path: '', component: RecipeStartComponent},
     { path: 'new', component: RecipeEditComponent },
-    { path: ':id', component: RecipeDetailComponent},
-    { path: ':id/edit', component: RecipeEditComponent }
+    { path: ':id', component: RecipeDetailComponent, resolve: [RecipeResolverService]},
+    { path: ':id/edit', component: RecipeEditComponent, resolve: [RecipeResolverService] }
   ] },
   { path: 'shopping-list', component: ShoppingListComponent }
 ];
