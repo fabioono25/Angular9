@@ -11,17 +11,18 @@ export class RecipeService {
   // recipeSelected = new Subject<Recipe>();
   recipesChanged = new Subject<Recipe[]>();
 
-  private recipes: Recipe[] = [
-    new Recipe('Pizza', 'Margherita', 'https://cdn.loveandlemons.com/wp-content/uploads/2019/09/margherita-pizza.jpg',
-      [
-        new Ingredient('Tomatoes', 2),
-        new Ingredient('Mussarela', 1)
-      ]),
-    new Recipe('Pudim', 'Leite Condensado', 'https://naminhapanela.com/wp-content/uploads/2019/12/Pudim_leite_condensado-3-1024x685.jpg',
-      [
-        new Ingredient('Milk', 1)
-      ])
-  ];
+  // private recipes: Recipe[] = [
+  //   new Recipe('Pizza', 'Margherita', 'https://cdn.loveandlemons.com/wp-content/uploads/2019/09/margherita-pizza.jpg',
+  //     [
+  //       new Ingredient('Tomatoes', 2),
+  //       new Ingredient('Mussarela', 1)
+  //     ]),
+  //   new Recipe('Pudim', 'Leite Condensado', 'https://naminhapanela.com/wp-content/uploads/2019/12/Pudim_leite_condensado-3-1024x685.jpg',
+  //     [
+  //       new Ingredient('Milk', 1)
+  //     ])
+  // ];
+  private recipes: Recipe[] = [];
 
   constructor(private slService: ShoppingListService){}
 
