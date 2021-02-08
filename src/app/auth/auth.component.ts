@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { PlaceHolderDirective } from './../shared/placeholder/placeholder.directive';
+import { AlertComponent } from './../shared/alert/alert.component';
+import { Component, ComponentFactoryResolver, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { AuthService, AuthResponseData } from './auth.service';
 
@@ -9,14 +11,21 @@ import { AuthService, AuthResponseData } from './auth.service';
   selector: 'app-auth',
   templateUrl: './auth.component.html'
 })
-export class AuthComponent {
+export class AuthComponent implements OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  // the first occurrence
+  @ViewChild(PlaceHolderDirective, {static: false}) alertHost: PlaceHolderDirective;
 
-  onSwitchMode() {
+  private closeSub: Subscription;
+
+  constructor(private authService: AuthService,
+              private router: Router,
+              private componentFactoryResolver: ComponentFactoryResolver) {}
+
+              onSwitchMode() {
     this.isLoginMode = !this.isLoginMode;
   }
 
@@ -46,11 +55,36 @@ export class AuthComponent {
       errorMessage => {
         console.log(errorMessage);
         this.error = errorMessage;
+        this.showErrorAlert(errorMessage);
         this.isLoading = false;
       }
     );
 
     form.reset();
+  }
+
+  ngOnDestroy(): void {
+    if (this.closeSub) {
+      this.closeSub.unsubscribe();
+    }
+  }
+
+  // creating an alert programmatically
+  private showErrorAlert(message: string){
+    // factory
+    const alertCmpFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+
+    // interact with the place in the DOM
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+
+    componentRef.instance.message = message;
+    this.closeSub = componentRef.instance.close.subscribe(() => {
+      this.closeSub.unsubscribe();
+      hostViewContainerRef.clear();
+    });
   }
 
   onHandleError(){
